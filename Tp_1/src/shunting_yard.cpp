@@ -25,7 +25,7 @@ const char __img_character__ = 'i'; // Esto eventualmente lo sacare
 
 class Token {
 
-	// Este objeto puede tomar cualquier simbolo; si es un operador tendra las propiedades de precedencia
+	// La clase si es un operador tendra las propiedades de precedencia
 	// y asocitaivdad; en cambio si no es un operador, devolvera un caracter comun pero con precedencia y asoc. 0
 	// 
 	//
@@ -34,7 +34,6 @@ public:
 	// El token en cuestion
 	char symbol;
 	int value;
-	//string str;
 
 	// Tipo de simbolo:
 	// 
@@ -99,9 +98,8 @@ public:
 };
 
 
-bool isBalanced(const string&);
+bool isBalanced(const string&); // No sirve para nada,, el agloritmo ya verifica si esta balanceado o no
 int __pow(int r, int k);
-int apply_operation(int, int, char);
 Complejo apply_cmplx_operation(Complejo &, Complejo &, char);
 
 // ==================================================================================================================================== //
@@ -115,15 +113,8 @@ int main(int argc, char* argv[]) {
 
 	// Stack de operadores
 	stack <char> ops;
-
 	// En este stack ira a parar el resultado
-	//stack <int> values;
-	// Stack imaginario LOL
 	stack <Complejo> cmplx_values;
-
-	// Cola de salida en RPN( solo para numeros de 1 digito, sin funcion ni variables) 
-	queue <char> output;
-
 
 	Token token;
 	Token toptoken;
@@ -175,9 +166,6 @@ int main(int argc, char* argv[]) {
 
 			z_aux.setReal((double)val);
 
-			// Mando al stack SOLO el primer digito; Enrealidad esto lo voy a sacar eventualmente NO DARLE BOLA
-			output.push(token.sym());
-
 			// Mando al stack values el numero
 			cmplx_values.push(z_aux);
 
@@ -209,8 +197,6 @@ int main(int argc, char* argv[]) {
 					)
 				{
 
-					// Push  token del tope de la pila en la cola de salida
-					output.push(toptoken.sym());
 					// Pop el toekn del tope de la pila ops
 					ops.pop();
 
@@ -268,9 +254,6 @@ int main(int argc, char* argv[]) {
 					// Se realiza la operacion y se manda a la pila de resultados
 					cmplx_values.push(apply_cmplx_operation(z1, z2, toptoken.sym()));
 
-					// Se manda el operador a la cola de salida.
-					output.push(toptoken.sym());
-
 					// SI el stack se acabo, y no encontro ningun parentesis(while no finaliza):
 					if (ops.empty()) {
 						std::cerr << "equation isn't balanced" << endl;
@@ -294,7 +277,6 @@ int main(int argc, char* argv[]) {
 		}
 
 		// Se incrementa el contador para avanzar al proximo token
-		// Y se reestablece z_aux
 		i++;
 	}
 	// Todo lo que quede en el stack ops, va a parar a la cola
@@ -313,12 +295,6 @@ int main(int argc, char* argv[]) {
 			exit(1);
 		}
 
-		output.push(toptoken.sym());
-
-		// Realizo la operacion dentro de los parentesis:
-		//
-		// Tomo los dos operandos de la pila de values
-		//
 		Complejo z2(cmplx_values.top().getReal(), cmplx_values.top().getImag());
 		cmplx_values.pop();
 
@@ -330,13 +306,6 @@ int main(int argc, char* argv[]) {
 	}
 	//
 	// Fin de parseo
-
-	//std::cout << "Cola de salida: " << endl;
-
-	//while (!output.empty()) {
-	//	std::cout << output.front() << endl;
-	//	output.pop();
-	//}
 
 	std::cout << "Resultado" << endl;
 	cmplx_values.top().printRect();
@@ -705,35 +674,6 @@ bool Token::isSeparator() {
 char Token::sym() {
 
 	return this->symbol;
-}
-
-int apply_operation(int val1, int val2, char  op) {
-	switch (op) {
-	case '+':
-		return val1 + val2;
-		break;
-	case '-':
-		return val1 - val2;
-		break;
-	case '*':
-		return val1 * val2;
-		break;
-	case '/':
-		return val1 / val2;
-		break;
-	case '^':
-		return __pow(val1,val2);
-		break;
-	default:
-		return 0;
-		break;
-	}
-}
-
-int __pow(int r, int k) {
-	if (k == 0)
-		return 1;
-	return r * __pow(r, k - 1);
 }
 
 Complejo apply_cmplx_operation(Complejo & z1, Complejo & z2, char op) {
