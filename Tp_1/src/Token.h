@@ -49,6 +49,7 @@ public:
 	//			sin(): s
 	//			cos(): c
 	// espacio vacio ' ': blank 
+	// variable 'z': var
 	// No es un token valido: notk
 	//
 	string type;

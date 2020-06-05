@@ -1,6 +1,6 @@
 #include "Token.h"
 
-using namespace std
+using namespace std;
 
 
 const static char __operators__[] = { '+', '-', '*', '/', '^' };
@@ -96,6 +96,14 @@ Token::Token(char c) {
 	if (c == ' ') {
 		this->type = "blank";
 	}
+
+	// Chequeo si es una variable
+	//
+	if (c == 'z') {
+		this->type = "var";
+		this->symbol = c;
+	}
+
 }
 Token::~Token() {
 	this->symbol = 0;
@@ -109,6 +117,7 @@ Token::~Token() {
 
 
 const Token& Token::operator=(char& c) {
+
 	this->symbol = c;
 
 	// Arranca con un valor por defecto si no es un token valido.
@@ -183,6 +192,12 @@ const Token& Token::operator=(char& c) {
 		this->type = "blank";
 	}
 
+	// Chequeo si es una variable
+	//
+	if (c == 'z') {
+		this->type = "var";
+		this->symbol = c;
+	}
 	return *this;
 }
 const Token& Token::operator=(const char& c) {
@@ -226,9 +241,8 @@ const Token& Token::operator=(const char& c) {
 			this->associativity = 'r';
 			break;
 		default:
-			break;
+		break;
 
-			// Falta implementar % y !
 		}
 	}
 
@@ -260,6 +274,13 @@ const Token& Token::operator=(const char& c) {
 	//
 	if (c == ' ') {
 		this->type = "blank";
+	}
+
+	// Chequeo si es una variable
+	//
+	if (c == 'z') {
+		this->type = "var";
+		this->symbol = c;
 	}
 
 	return *this;
@@ -395,6 +416,11 @@ bool Token::isSeparator() {
 }
 bool Token::isFunction() {
 	if (this->type == "func")
+		return true;
+	return false;
+}
+bool Token::isVariable() {
+	if (this->type == "var")
 		return true;
 	return false;
 }

@@ -1,6 +1,3 @@
-// PRECONDICION: Validar sintaxis
-// No tiene que haber errores de sintaxis
-
 #include "Token.h"
 #include <stack> // Implementarlo nosotros
 #include <queue> // implementarlo nosotros
@@ -10,11 +7,17 @@
 // ==================================================================================================================================== //
 // ==================================================================================================================================== //
 
+const char __img_character__ = 'i'; // Esto eventualmente lo sacare
+
+const string eq = "z+z";
 
 int main(int argc, char* argv[]) {
 
-	std::cout << argv[1] << endl;
-	const string eq = argv[1];
+	//std::cout << argv[1] << endl;
+	const string eq2 = argv[1];
+	std::cout << eq << endl;
+
+	// Hay un problema con la division de complejos
 
 	// Stack de operadores
 	stack <char> ops;
@@ -23,9 +26,13 @@ int main(int argc, char* argv[]) {
 
 	Token token;
 	Token toptoken;
+	Token prev_token;
 	Token next_token;
 
+	Complejo z(2, 2);
+
 	size_t i = 0;
+
 
 	// Arranca la evaluacion de la cadena
 	// 
@@ -36,9 +43,18 @@ int main(int argc, char* argv[]) {
 
 		// Leo un token
 		token = eq[i];
+		if (i == 0)
+			prev_token = eq[i];
+		else
+			prev_token = eq[i - 1];
+		if (i == eq.length() - 1)
+			next_token = eq[i];
+		else
+			next_token = eq[i + 1];
 
 		// SI no es un token valido: No es numero, operador, parentesis, letra reservada para funcion, o espacio en blanco
 		if (!token.istoken()) {
+			std::cerr << "ecuacion no valida" << endl;
 			exit(1);
 		}
 
@@ -77,9 +93,19 @@ int main(int argc, char* argv[]) {
 			continue;
 		}
 
-		// No hay funcion pero habria que colocar else if(token.isFunc)
+		// Si es una variable
+		else if (token.isVariable()) {
+			cmplx_values.push(z);
+		}
 
-		// Si el token es un operador 
+
+		// Si el token es un operador
+		//
+		// Si sucdio esto: ++ o ** o //
+		else if (token.isOperator() && prev_token.isOperator() && i != 0) {
+			cerr << "error de sintaxis" << endl;
+			exit(1);
+		}
 		else if (token.isOperator()) {
 			//
 			// Mientras que haya un operador para sacar en la pila de ops., 
