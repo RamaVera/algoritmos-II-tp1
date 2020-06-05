@@ -1,64 +1,57 @@
-/*
- * FunctionStack.h
- *
- *  Created on: 3 jun. 2020
- *      Author: Ramiro
- */
+//
+//
+// Falta:
+// 
+// - numeros de mas de 1 digito: DONE
+// - funciones: NO TENGO IDEA -- AYUDA
+// - variables: TENGO LA IDEA
+//
+//
+// agregarle a la clase token el numero imaginario
+//
+#ifndef __TOKEN__
+#define __TOKEN__
 
-#ifndef SRC_TOKEN_H_
-#define SRC_TOKEN_H_
-
-#include <iostream>
 #include <cctype> //  isdigit()
-#include <stack>
-#include <queue>
-#include <string>
+#include "Complejo.h"
+#include <iostream>
+#include <string> 
 #include <algorithm> // std::find() ; std::begin() ; std::end()
-
 
 using namespace std;
 
-class Token {
-private:
-	string function;
 
+class Token {
+
+	// La clase si es un operador tendra las propiedades de precedencia
+	// y asocitaivdad; en cambio si no es un operador, devolvera un caracter comun pero con precedencia y asoc. 0
+	// 
+	//
 public:
-private:
 
 	// El token en cuestion
 	char symbol;
 	int value;
-	//string str;
 
 	// Tipo de simbolo:
-	//
+	// 
 	// Operador: op
 	// Numero: num
+	// Numero imaginario 'i': img
 	// Separador: sep
-	// Ffuncion: func
+	// Funcion: func
+	//			min(): m
+	//			max(): M
+	//			Re(): R
+	//			Im(): I
+	//			exp(): e
+	//			ln(): l
+	//			sin(): s
+	//			cos(): c
+	// espacio vacio ' ': blank 
 	// No es un token valido: notk
 	//
 	string type;
-
-
-	// Numero
-	// numSuspect: Flag. SI llega a ingresar un caracter entero se activa
-	// Siempre que se ingrese un int, se pregunta si ese flag esta en 1
-	// En caso de que entre otro tipo, se baja el flag
-	//
-	//bool numSuspect;
-	//string number;
-
-	// Si es una funcion; se implementara en la version alpha
-	// Flag de sospecha de encontrar caracter de funcion:
-	// cos ; sin/sen ; exp
-	// En prev se almacena el caracter anterior, ejemplo:
-	// si se encuentra s se guarda en prev, se activa el flag; si luego se encuentra
-	// una i, se compara con prev y luego hasta la n. se forma sin
-	//
-	//string func;
-	//char prev;
-	//bool funcSuspect;
 
 	// Propiedad de los operadors
 	//
@@ -66,34 +59,25 @@ private:
 	// × 3 	Left
 	// / 3 	Left
 	// + 2 	Left
-	// − 2 	Left
+	// − 2 	Left 
 	//
-	int precedence; // Puede ser 4; 3; 2;
+	int precedence; // Puede ser 4; 3; 2; 
 	char associativity; // Puede ser r (right) o l (left)
 
-	// Usar asi:
-	// Declaro token por defecto: Token token;
-	// Dentro del while:
-	// -- token = c;
-	// -- Pregunto si es num, funcion, parentesis.
-	// ----- SI es num: Guardo token
-	// -------- Para todo token y mientras que sea int
-	// ------------ val = (val*10) + (tokens[i]-'0'); Push val
-	// ----- SI es op: Guardo el operador
 
 public:
 
 	Token(); // Done
-	Token(char ); // Done
-	Token(const Token &);
+	Token(char); // Done
+	Token(const Token&);
 	~Token(); // Done
 
-	const Token & operator=(const Token &);
-	const Token & operator=(const string &);
-	const Token & operator=(const char &); // Done
-	const Token & operator=(const int &); // Done; Pero no sirve para nada
-	const Token & operator=(string &);
-	const Token & operator=(char &); // Done
+	const Token& operator=(const Token&);
+	const Token& operator=(const string&); // Done; Loq ue hace es recibir la funcion
+	const Token& operator=(const char&); // Done
+	const Token& operator=(const int&); // Done; Pero no sirve para nada
+	const Token& operator=(string&); // Done
+	const Token& operator=(char&); // Done
 
 	char sym(); // Done
 
@@ -106,9 +90,13 @@ public:
 	bool isOperator(); // Done
 	bool isSeparator(); // Done
 	bool isNumber(); // Done
-	bool isFunction();
+	bool isFunction(); // Done
 	bool istoken(); // Done
 
 };
 
-#endif /* SRC_TOKEN_H_ */
+int __pow(int r, int k); // Habria que implementarlo para complejos
+Complejo apply_cmplx_operation(Complejo&, Complejo&, char); // Recibe dos complejos y le aplica la operacion + - * / falta potencia
+Complejo apply_func(Complejo& z, char); // Recibe un complejo y le aplica la funcion; Falta la mayoria...
+
+#endif
