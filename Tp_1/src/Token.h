@@ -92,6 +92,7 @@ public:
 	bool isNumber(); // Done
 	bool isFunction(); // Done
 	bool istoken(); // Done
+	bool isVariable();
 
 };
 
