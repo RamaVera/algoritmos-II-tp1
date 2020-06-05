@@ -1,3 +1,6 @@
+// PRECONDICION: Validar sintaxis
+// No tiene que haber errores de sintaxis
+
 #include "Token.h"
 #include <stack> // Implementarlo nosotros
 #include <queue> // implementarlo nosotros
