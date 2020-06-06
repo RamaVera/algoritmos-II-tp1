@@ -48,13 +48,31 @@ double Complejo::getArg(){
 
 //setear atributos:
 void Complejo::setReal(double val){
-	real=val;
+	this->real=val;
 	setPolar();
 }
 
 void Complejo::setImag(double val){
-	imag=val;
+	this->imag=val;
 	setPolar();
+}
+
+void Complejo::setAbs(double val){
+	if(val >= 0)
+		this->abs=val;
+	else
+		this->abs=-val;
+	setRect();
+}
+
+void Complejo::setArg(double val){
+	if(val > M_PI)
+		this->arg = std::fmod(val, -M_PI);
+	else if(val < -M_PI)
+		this->arg = std::fmod(-val, M_PI);
+	else 
+		this->arg=val;
+	setRect();
 }
 
 void Complejo::setPolar(){
@@ -62,8 +80,12 @@ void Complejo::setPolar(){
 	arg=atan2(imag, real); //calcula atan2(imag/real) y devuelve un valor entre -PI y PI
 }
 
+void Complejo::setRect(){
+	real=abs*(cos(arg));
+	imag=abs*(sin(arg));
+}
 
-//conjugar
+//CONJUGAR:
 Complejo Complejo::conjugar(){
 	Complejo aux(real, -imag);
 	return aux;
@@ -76,12 +98,12 @@ void Complejo::printRect(){
 }
 
 void Complejo::printPolar(){
-	std::cout << abs << "*exp(j" << arg << ')' << std::endl;
+	std::cout << abs << "*exp(i" << arg << ')' << std::endl;
 }
 
 
 //sobrecarga de operadores:
-//suma
+//SUMA
 Complejo Complejo::operator+(const Complejo & right){
 	Complejo aux(real + right.real, imag + right.imag);
 	return aux;
@@ -96,7 +118,7 @@ Complejo operator+ (double left, const Complejo & right){
 	return Complejo(right.real + left, right.imag);
 }
 
-//resta
+//RESTA
 Complejo Complejo::operator-(const Complejo & right){
 	Complejo aux(real - right.real, imag - right.imag);
 	return aux;
@@ -111,7 +133,7 @@ Complejo operator- (double left, const Complejo & right){
 	return Complejo(left - right.real, - right.imag );
 }
 
-//producto
+//PRODUCTO
 Complejo Complejo::operator*(const Complejo & right){
 	Complejo aux(real*right.real - imag*right.imag, real*right.imag + imag*right.real);
 	return aux;
@@ -127,10 +149,10 @@ Complejo operator* (double left, const Complejo & right){
 }
 
 
-//división
+//DIVISION
 Complejo Complejo::operator/(const Complejo & right){
-	double a = (real*right.real - imag*right.imag)/pow(right.abs,2);
-	double b = (real*right.imag + imag*right.real)/pow(right.abs,2);
+	double a = (this->real*right.real + this->imag*right.imag)/pow(right.abs,2);
+	double b = (this->imag*right.real - this->real*right.imag)/pow(right.abs,2);
 	Complejo aux(a, b);
 	return aux;
 }
@@ -140,18 +162,98 @@ Complejo Complejo::operator/(double right){
 	return aux;
 }
 
-//asignación
+Complejo operator/ (double left, const Complejo & right){
+	Complejo aux = right;
+	aux = aux.conjugar()*left/pow(aux.getAbs(),2);
+	return aux;
+}
+
+
+//POTENCIA
+////// Tenemos que Z1^Z2 == exp(Z2*log(Z1))
+	// aux = Z2*log(Z1) = a + ib
+	// resultado = |exp(a)| exp(ib)
+Complejo Complejo::operator^(const Complejo & right){
+	//utilizo result como auxiliar tambien, pero despues se sobrescribe
+	Complejo result(real, imag), aux(right);
+	aux = aux * log(result);
+
+	//se setea mediante coordenadas polares
+	result.setAbs( exp(aux.getReal()) );
+	result.setArg( aux.getImag() );
+
+	return result;
+}
+
+Complejo Complejo::operator^(double right){
+	Complejo result, aux(real, imag);
+	aux = right * log(aux);
+
+	//se setea mediante coordenadas polares
+	result.setAbs( exp(aux.getReal()) );
+	result.setArg( aux.getImag() );
+
+	return result;	
+}
+
+Complejo Complejo::operator^(int n){
+	Complejo resultado(1, 0);
+	//Acumulador de las potencias
+	Complejo acum = *this;
+
+	if(n<0){
+		//invierto el num complejo
+		acum = 1/acum;
+		//busco la potencia de este numero
+		return acum^(-n);
+	}
+	//Empezamos del LSB al MSB
+	while(n){
+		//si vale 1, actualizamos el resultado con el nuevo valor del acum
+		if(n&1)
+			resultado = resultado * acum;
+		//contamos el bit
+		acum = acum * acum;
+		//shifteamos a la derecha a n, desechando el LSB por el siguiente
+		n >>= 1;
+	}
+
+	return resultado;
+}
+
+Complejo operator^ (double left, const Complejo & right){
+	Complejo result, aux(right);
+	aux = aux * log(left);
+
+	//se setea mediante coordenadas polares
+	result.setAbs( exp(aux.getReal()) );
+	result.setArg( aux.getImag() );
+
+	return result;	
+}
+
+//ASIGNACION
 Complejo& Complejo::operator=(const Complejo & right){
 	real = right.real;
 	imag = right.imag;
 	abs = right.abs;
+	arg = right.arg;
 	return *this;
 }
 
-//comparación
+//IGUAL A
 bool Complejo::operator==(const Complejo & right){
 	if(real == right.real && imag == right.imag)
 		return true;
 
 	return false;
+}
+
+//POR FUERA DE LA CLASE:
+//LOGARITMO COMPLEJO
+Complejo log(Complejo & z){
+	Complejo aux;
+	aux.setReal( log(z.getAbs()) );
+	aux.setImag( z.getArg() );
+	return aux;
 }
