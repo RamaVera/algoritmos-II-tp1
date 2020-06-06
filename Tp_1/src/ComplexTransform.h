@@ -2,16 +2,18 @@
 #define COMPLEXTRANSFORM_H_
 
 #include "Complejo.h"
+#include "Token.h"
+#include <stack>
 #include <iostream>
+#include <cctype> //isalpha
 
 
 enum class TransformStatus
     {
      	funtionIsOk,
      	functionIsNotBalanced,
-     	funtionHasSingularity
+     	functionHasOperatorError
     };
-
 
 class ComplexTransform{
 private:
@@ -32,11 +34,14 @@ public:
 
 	std::string getFunction( void );
 
-	static TransformStatus isGoodTransform(std::string transformString);
+	static TransformStatus isGoodExpresion(std::string transformString);
 	static void setTransform(std::string transformString);
 	static bool isBalanced(const std::string transformString);
-	static bool hasSingularity(const std::string transformString);
+	static bool hasOperatorError(const std::string transformString);
 
+	static int getNumberOfValidFunctions();
+	static string getValidFunctions(int i);
+	static bool isOnValidFunctionTable(string fun);
 
 
 };

@@ -3,25 +3,25 @@
     	
     <storageModule moduleId="org.eclipse.cdt.core.settings">
         		
-        <cconfiguration id="cdt.managedbuild.toolchain.gnu.cygwin.base.1566055635">
+        <cconfiguration id="cdt.managedbuild.toolchain.gnu.cygwin.base.1011776685">
             			
-            <storageModule buildSystemId="org.eclipse.cdt.managedbuilder.core.configurationDataProvider" id="cdt.managedbuild.toolchain.gnu.cygwin.base.1566055635" moduleId="org.eclipse.cdt.core.settings" name="Default">
+            <storageModule buildSystemId="org.eclipse.cdt.managedbuilder.core.configurationDataProvider" id="cdt.managedbuild.toolchain.gnu.cygwin.base.1011776685" moduleId="org.eclipse.cdt.core.settings" name="Default">
                 				
                 <externalSettings/>
                 				
                 <extensions>
                     					
-                    <extension id="org.eclipse.cdt.core.Cygwin_PE64" point="org.eclipse.cdt.core.BinaryParser"/>
+                    <extension id="org.eclipse.cdt.core.ELF" point="org.eclipse.cdt.core.BinaryParser"/>
                     					
-                    <extension id="org.eclipse.cdt.core.GASErrorParser" point="org.eclipse.cdt.core.ErrorParser"/>
+                    <extension id="org.eclipse.cdt.core.GCCErrorParser" point="org.eclipse.cdt.core.ErrorParser"/>
                     					
                     <extension id="org.eclipse.cdt.core.GmakeErrorParser" point="org.eclipse.cdt.core.ErrorParser"/>
                     					
-                    <extension id="org.eclipse.cdt.core.GLDErrorParser" point="org.eclipse.cdt.core.ErrorParser"/>
-                    					
                     <extension id="org.eclipse.cdt.core.CWDLocator" point="org.eclipse.cdt.core.ErrorParser"/>
                     					
-                    <extension id="org.eclipse.cdt.core.GCCErrorParser" point="org.eclipse.cdt.core.ErrorParser"/>
+                    <extension id="org.eclipse.cdt.core.GASErrorParser" point="org.eclipse.cdt.core.ErrorParser"/>
+                    					
+                    <extension id="org.eclipse.cdt.core.GLDErrorParser" point="org.eclipse.cdt.core.ErrorParser"/>
                     				
                 </extensions>
                 			
@@ -29,41 +29,37 @@
             			
             <storageModule moduleId="cdtBuildSystem" version="4.0.0">
                 				
-                <configuration buildProperties="" description="" id="cdt.managedbuild.toolchain.gnu.cygwin.base.1566055635" name="Default" optionalBuildProperties="" parent="org.eclipse.cdt.build.core.emptycfg">
+                <configuration artifactName="${ProjName}" buildProperties="" description="" id="cdt.managedbuild.toolchain.gnu.cygwin.base.1011776685" name="Default" optionalBuildProperties="org.eclipse.cdt.docker.launcher.containerbuild.property.selectedvolumes=,org.eclipse.cdt.docker.launcher.containerbuild.property.volumes=" parent="org.eclipse.cdt.build.core.emptycfg">
                     					
-                    <folderInfo id="cdt.managedbuild.toolchain.gnu.cygwin.base.1566055635.2008369624" name="/" resourcePath="">
+                    <folderInfo id="cdt.managedbuild.toolchain.gnu.cygwin.base.1011776685.1848333322" name="/" resourcePath="">
                         						
-                        <toolChain id="cdt.managedbuild.toolchain.gnu.cygwin.base.1622826535" name="Cygwin GCC" superClass="cdt.managedbuild.toolchain.gnu.cygwin.base">
+                        <toolChain id="cdt.managedbuild.toolchain.gnu.cross.base.815458279" name="Cross GCC" superClass="cdt.managedbuild.toolchain.gnu.cross.base">
                             							
-                            <targetPlatform archList="all" binaryParser="org.eclipse.cdt.core.Cygwin_PE64" id="cdt.managedbuild.target.gnu.platform.cygwin.base.596557731" name="Debug Platform" osList="win32" superClass="cdt.managedbuild.target.gnu.platform.cygwin.base"/>
+                            <option id="cdt.managedbuild.option.gnu.cross.prefix.2011704148" name="Prefix" superClass="cdt.managedbuild.option.gnu.cross.prefix"/>
                             							
-                            <builder buildPath="${workspace_loc:/Tp_1}/Default" id="cdt.managedbuild.target.gnu.builder.cygwin.base.1014378708" keepEnvironmentInBuildfile="false" managedBuildOn="true" name="Gnu Make Builder" superClass="cdt.managedbuild.target.gnu.builder.cygwin.base"/>
+                            <option id="cdt.managedbuild.option.gnu.cross.path.328615362" name="Path" superClass="cdt.managedbuild.option.gnu.cross.path"/>
                             							
-                            <tool id="cdt.managedbuild.tool.gnu.assembler.cygwin.base.1885390556" name="GCC Assembler" superClass="cdt.managedbuild.tool.gnu.assembler.cygwin.base">
+                            <targetPlatform archList="all" binaryParser="org.eclipse.cdt.core.ELF" id="cdt.managedbuild.targetPlatform.gnu.cross.1971964085" isAbstract="false" osList="all" superClass="cdt.managedbuild.targetPlatform.gnu.cross"/>
+                            							
+                            <builder buildPath="${workspace_loc:/Tp_1}/Default" id="cdt.managedbuild.builder.gnu.cross.944758568" keepEnvironmentInBuildfile="false" name="Gnu Make Builder" superClass="cdt.managedbuild.builder.gnu.cross"/>
+                            							
+                            <tool id="cdt.managedbuild.tool.gnu.cross.c.compiler.1847300377" name="Cross GCC Compiler" superClass="cdt.managedbuild.tool.gnu.cross.c.compiler">
                                 								
-                                <inputType id="cdt.managedbuild.tool.gnu.assembler.input.1920681558" superClass="cdt.managedbuild.tool.gnu.assembler.input"/>
+                                <inputType id="cdt.managedbuild.tool.gnu.c.compiler.input.62900764" superClass="cdt.managedbuild.tool.gnu.c.compiler.input"/>
                                 							
                             </tool>
                             							
-                            <tool id="cdt.managedbuild.tool.gnu.archiver.cygwin.base.1619120139" name="GCC Archiver" superClass="cdt.managedbuild.tool.gnu.archiver.cygwin.base"/>
-                            							
-                            <tool id="cdt.managedbuild.tool.gnu.cpp.compiler.cygwin.base.757753705" name="Cygwin C++ Compiler" superClass="cdt.managedbuild.tool.gnu.cpp.compiler.cygwin.base">
+                            <tool id="cdt.managedbuild.tool.gnu.cross.cpp.compiler.1298647803" name="Cross G++ Compiler" superClass="cdt.managedbuild.tool.gnu.cross.cpp.compiler">
                                 								
-                                <inputType id="cdt.managedbuild.tool.gnu.cpp.compiler.input.cygwin.1225969951" superClass="cdt.managedbuild.tool.gnu.cpp.compiler.input.cygwin"/>
+                                <inputType id="cdt.managedbuild.tool.gnu.cpp.compiler.input.862219363" superClass="cdt.managedbuild.tool.gnu.cpp.compiler.input"/>
                                 							
                             </tool>
                             							
-                            <tool id="cdt.managedbuild.tool.gnu.c.compiler.cygwin.base.316567018" name="Cygwin C Compiler" superClass="cdt.managedbuild.tool.gnu.c.compiler.cygwin.base">
-                                								
-                                <inputType id="cdt.managedbuild.tool.gnu.c.compiler.input.cygwin.2040145048" superClass="cdt.managedbuild.tool.gnu.c.compiler.input.cygwin"/>
-                                							
-                            </tool>
+                            <tool id="cdt.managedbuild.tool.gnu.cross.c.linker.415063858" name="Cross GCC Linker" superClass="cdt.managedbuild.tool.gnu.cross.c.linker"/>
                             							
-                            <tool id="cdt.managedbuild.tool.gnu.c.linker.cygwin.base.2144838261" name="Cygwin C Linker" superClass="cdt.managedbuild.tool.gnu.c.linker.cygwin.base"/>
-                            							
-                            <tool id="cdt.managedbuild.tool.gnu.cpp.linker.cygwin.base.1023461018" name="Cygwin C++ Linker" superClass="cdt.managedbuild.tool.gnu.cpp.linker.cygwin.base">
+                            <tool id="cdt.managedbuild.tool.gnu.cross.cpp.linker.2058466474" name="Cross G++ Linker" superClass="cdt.managedbuild.tool.gnu.cross.cpp.linker">
                                 								
-                                <inputType id="cdt.managedbuild.tool.gnu.cpp.linker.input.1396321653" superClass="cdt.managedbuild.tool.gnu.cpp.linker.input">
+                                <inputType id="cdt.managedbuild.tool.gnu.cpp.linker.input.1988375158" superClass="cdt.managedbuild.tool.gnu.cpp.linker.input">
                                     									
                                     <additionalInput kind="additionalinputdependency" paths="$(USER_OBJS)"/>
                                     									
@@ -72,10 +68,24 @@
                                 </inputType>
                                 							
                             </tool>
+                            							
+                            <tool id="cdt.managedbuild.tool.gnu.cross.archiver.660751910" name="Cross GCC Archiver" superClass="cdt.managedbuild.tool.gnu.cross.archiver"/>
+                            							
+                            <tool id="cdt.managedbuild.tool.gnu.cross.assembler.829009414" name="Cross GCC Assembler" superClass="cdt.managedbuild.tool.gnu.cross.assembler">
+                                								
+                                <inputType id="cdt.managedbuild.tool.gnu.assembler.input.596631056" superClass="cdt.managedbuild.tool.gnu.assembler.input"/>
+                                							
+                            </tool>
                             						
                         </toolChain>
                         					
                     </folderInfo>
+                    					
+                    <sourceEntries>
+                        						
+                        <entry excluding="src/shunting_yard.cpp|src/analizar_sintaxis_funcion.cpp" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name=""/>
+                        					
+                    </sourceEntries>
                     				
                 </configuration>
                 			
@@ -109,7 +119,19 @@
             		
         </scannerConfigBuildInfo>
         		
+        <scannerConfigBuildInfo instanceId="org.eclipse.linuxtools.cdt.autotools.core.toolChain.902175133;org.eclipse.linuxtools.cdt.autotools.core.toolChain.902175133.1058897353;org.eclipse.linuxtools.cdt.autotools.core.toolchain.tool.gcc.1516429236;cdt.managedbuild.tool.gnu.c.compiler.input.530499199">
+            			
+            <autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId=""/>
+            		
+        </scannerConfigBuildInfo>
+        		
         <scannerConfigBuildInfo instanceId="cdt.managedbuild.config.gnu.cygwin.exe.release.1339008670;cdt.managedbuild.config.gnu.cygwin.exe.release.1339008670.;cdt.managedbuild.tool.gnu.c.compiler.cygwin.exe.release.77287837;cdt.managedbuild.tool.gnu.c.compiler.input.cygwin.1494909247">
+            			
+            <autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId=""/>
+            		
+        </scannerConfigBuildInfo>
+        		
+        <scannerConfigBuildInfo instanceId="org.eclipse.linuxtools.cdt.autotools.core.toolChain.902175133;org.eclipse.linuxtools.cdt.autotools.core.toolChain.902175133.1058897353;org.eclipse.linuxtools.cdt.autotools.core.toolchain.tool.gpp.446953601;cdt.managedbuild.tool.gnu.cpp.compiler.input.205854259">
             			
             <autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId=""/>
             		
@@ -119,7 +141,7 @@
     	
     <storageModule moduleId="cdtBuildSystem" version="4.0.0">
         		
-        <project id="Tp_1.null.1325923465" name="Tp_1"/>
+        <project id="Tp_1.null.580327865" name="Tp_1"/>
         	
     </storageModule>
     	

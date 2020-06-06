@@ -74,10 +74,10 @@ public:
 	~Token(); // Done
 
 	const Token& operator=(const Token&);
-	const Token& operator=(const string&); // Done; Loq ue hace es recibir la funcion
+	//const Token& operator=(const string&); // Done; Loq ue hace es recibir la funcion
 	const Token& operator=(const char&); // Done
 	const Token& operator=(const int&); // Done; Pero no sirve para nada
-	const Token& operator=(string&); // Done
+	//const Token& operator=(string&); // Done
 	const Token& operator=(char&); // Done
 
 	char sym(); // Done
@@ -94,6 +94,15 @@ public:
 	bool isFunction(); // Done
 	bool istoken(); // Done
 	bool isVariable();
+
+
+	static int getInvalidStartOperators(int i);
+	static int getInvalidEndingOperators(int i);
+
+	static int getNumberOfInvalidStartOperators();
+	static int getNumberOfInvalidEndingOperators();
+
+
 
 };
 

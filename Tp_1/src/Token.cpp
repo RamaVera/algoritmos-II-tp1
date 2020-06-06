@@ -2,13 +2,12 @@
 
 using namespace std;
 
-
 const static char __operators__[] = { '+', '-', '*', '/', '^' };
-const static string __functions__[] = { "exp", "min", "max", "exp", "Re", "Im", "log", "cos", "sin" };
 const static char __separators__[] = { '(', ')' };
 const char __img_character__ = 'i'; // Esto eventualmente lo sacare
 
-
+const static char invalidStartOperators[]={'^','*','/',')',']','}'};
+const static char invalidEndingOperators[]={'^','*','/','(','{','{','+','-'};
 
 Token::Token() {
 
@@ -87,8 +86,15 @@ Token::Token(char c) {
 		this->value = static_cast<int>(c);
 		this->type = "num";
 	}
-	if (c == 'i') {
-		this->type = "num";
+	if (isalpha(c)) {
+		if (c == 'i' )
+			this->type = "num";
+		else if (c == 'z') {
+			this->type = "var";
+			this->symbol = c;
+		}		
+		else
+		this->type = "func";
 	}
 
 	// Chequeo si es un espacio en blanco
@@ -96,14 +102,6 @@ Token::Token(char c) {
 	if (c == ' ') {
 		this->type = "blank";
 	}
-
-	// Chequeo si es una variable
-	//
-	if (c == 'z') {
-		this->type = "var";
-		this->symbol = c;
-	}
-
 }
 Token::~Token() {
 	this->symbol = 0;
@@ -117,7 +115,6 @@ Token::~Token() {
 
 
 const Token& Token::operator=(char& c) {
-
 	this->symbol = c;
 
 	// Arranca con un valor por defecto si no es un token valido.
@@ -182,21 +179,22 @@ const Token& Token::operator=(char& c) {
 		this->type = "num";
 		this->value = static_cast<int>(c);
 	}
-	if (c == 'i') {
-		this->type = "num";
-	}
-
+	
 	// Chequeo si es un espacio en blanco
 	//
 	if (c == ' ') {
 		this->type = "blank";
 	}
 
-	// Chequeo si es una variable
-	//
-	if (c == 'z') {
-		this->type = "var";
-		this->symbol = c;
+	if (isalpha(c)) {
+		if (c == 'i' )
+			this->type = "num";
+		else if (c == 'z') {
+			this->type = "var";
+			this->symbol = c;
+		}		
+		else
+		this->type = "func";
 	}
 	return *this;
 }
@@ -241,7 +239,7 @@ const Token& Token::operator=(const char& c) {
 			this->associativity = 'r';
 			break;
 		default:
-		break;
+			break;
 
 		}
 	}
@@ -266,21 +264,22 @@ const Token& Token::operator=(const char& c) {
 		this->type = "num";
 		this->value = static_cast<int>(c);
 	}
-	if (c == 'i') {
-		this->type = "num";
-	}
-
+	
 	// Chequeo si es un espacio en blanco
 	//
 	if (c == ' ') {
 		this->type = "blank";
 	}
 
-	// Chequeo si es una variable
-	//
-	if (c == 'z') {
-		this->type = "var";
-		this->symbol = c;
+	if (isalpha(c)) {
+		if (c == 'i' )
+			this->type = "num";
+		else if (c == 'z') {
+			this->type = "var";
+			this->symbol = c;
+		}		
+		else
+		this->type = "func";
 	}
 
 	return *this;
@@ -294,6 +293,7 @@ const Token& Token::operator=(const int& val) {
 
 	return *this;
 }
+/*
 const Token& Token::operator=(const string& s) {
 
 	if (s == "exp") {
@@ -372,7 +372,7 @@ const Token& Token::operator=(string& s) {
 
 	return *this;
 }
-
+*/
 
 bool Token::leftAssoc() {
 	if (this->associativity == 'l')
@@ -435,6 +435,29 @@ int Token::getPrecedence() {
 }
 
 
+int Token::getNumberOfInvalidStartOperators()
+{
+	return sizeof(invalidStartOperators)/sizeof(char);
+}
+
+int Token::getNumberOfInvalidEndingOperators()
+{
+	return sizeof(invalidEndingOperators)/sizeof(char);
+}
+
+
+int Token::getInvalidStartOperators(int i)
+{
+	return invalidStartOperators[i];
+}
+
+int Token::getInvalidEndingOperators(int i)
+{
+	return invalidEndingOperators[i];
+}
+
+
+
 Complejo apply_cmplx_operation(Complejo& z1, Complejo& z2, char op) {
 	switch (op) {
 	case '+':
@@ -457,6 +480,7 @@ Complejo apply_cmplx_operation(Complejo& z1, Complejo& z2, char op) {
 		break;
 	}
 }
+
 Complejo apply_func(Complejo& z, char func) {
 
 	Complejo z_aux(0, 0);

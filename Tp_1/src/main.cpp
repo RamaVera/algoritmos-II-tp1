@@ -205,7 +205,7 @@ opt_function(string const &arg)
 		exit(1);
 	}
 
-	TransformStatus Status = ComplexTransform::isGoodTransform(transformString);
+	TransformStatus Status = ComplexTransform::isGoodExpresion(transformString);
 	switch(Status)
 	{
 	case TransformStatus::funtionIsOk:
@@ -216,8 +216,8 @@ opt_function(string const &arg)
 		cerr << "La funcion ingresada no esta balanceada "<< endl;
 		exit(1);
 		break;
-	case TransformStatus::funtionHasSingularity:
-		cerr <<" La funcion ingresada tiene una singularidad "<< endl;
+	case TransformStatus::functionHasOperatorError:
+		cerr <<" La funcion ingresada tiene un error de sintaxis debido a un caracter "<< endl;
 		exit(1);
 		break;
 	default:
