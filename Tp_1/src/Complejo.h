@@ -2,18 +2,26 @@
 #ifndef COMPLEJOS_INCLUDED
 #define COMPLEJOS_INCLUDED
 
-#include <iostream> //lo dejamos?
+#define _USE_MATH_DEFINES
+
+#include <iostream>
 #include <cmath>
-#include <iomanip>  // std::setprecision (para qué?)
+#include <iomanip>  // std::setprecision
 
 class Complejo{
 private:
 	double real;
 	double imag;
-	double abs; //valor absoluto
-	double arg; //argumento en radianes. Devuelve un valor entre -PI y PI
+	//valor absoluto
+	double abs;
+	//argumento en radianes. Devuelve un valor entre -PI y PI
+	double arg;
 
-	void setPolar();
+	// metodos privados para resetear los atributos polares
+	// o rectangulares cuando se modifica algun atributo particular
+	// mediante otro metodo publico.
+	void setPolar(); 
+	void setRect();
 
 public:
 	//constructores:
@@ -30,6 +38,8 @@ public:
 	//setear atributos:
 	void setReal(double);
 	void setImag(double);
+	void setAbs(double);
+	void setArg(double);
 
 	//conjugado:
 	Complejo conjugar();
@@ -38,26 +48,63 @@ public:
 	void printRect();
 	void printPolar();
 
-	//sobrecarga de operadores
-	Complejo operator+(const Complejo &); //suma entre Complejos
-	Complejo operator+(double); //suma con un real
+	//SOBRECARGA
+	
+	//SUMA
+	// entre Complejos
+	Complejo operator+(const Complejo &);
+	// con un real
+	Complejo operator+(double);
 	friend Complejo operator+ (double, const Complejo &); 
 
-	Complejo operator-(const Complejo &); //resta ente Complejos
-	Complejo operator-(double); //resta por un real
+
+	//RESTA
+	// entre Complejos
+	Complejo operator-(const Complejo &);
+	// por un real
+	Complejo operator-(double);
+	// de un real por un Complejo
 	friend Complejo operator- (double, const Complejo &);
 
-	Complejo operator*(const Complejo &); //producto entre Complejos
-	Complejo operator*(double); //producto por un real (escalar)
+
+	//PRODUCTO
+	// entre Complejos
+	Complejo operator*(const Complejo &);
+	// por un real
+	Complejo operator*(double);
+	// de un real por un Complejo
 	friend Complejo operator* (double, const Complejo &);
 
-	Complejo operator/(const Complejo&); //división entre Complejos
-	Complejo operator/(double); //división por un real (escalar)
+
+	//DIVISION
+	// por un Complejo
+	Complejo operator/(const Complejo&);
+	// por un real
+	Complejo operator/(double);
+	// real por un Complejo
+	friend Complejo operator/ (double, const Complejo &);
+
+	//POTENCIA
+	// por un Complejo
+	Complejo operator^(const Complejo&);
+	// por un real
+	Complejo operator^(double);
+	// por un entero
+	Complejo operator^(int);
+	// real por un Complejo
+	friend Complejo operator^ (double, const Complejo &);
 
 
-	Complejo& operator=(const Complejo&); //asignación entre Complejos
-	bool operator==(const Complejo&); // comparación entre Complejos
+	//OPERADOR ASIGNACION
+	// entre complejos
+	Complejo& operator=(const Complejo&);
+
+
+	//OPERADOR "IGUAL QUE"
+	bool operator==(const Complejo&);
 };
 
+//LOGARITMO COMPLEJO
+Complejo log(Complejo&);
 
 #endif//COMPLEJOS_INCLUDED
