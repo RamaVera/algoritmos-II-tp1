@@ -14,31 +14,25 @@ private:
 public:
 	//Post: Lista vacía
 	List();
-
 	//Post: Lista copiada
 	List(List<T> & otherList);
-
 	//Post: Libera los recursos asociados a la Lista
 	~List();
 
 	//Post: Devuelve True si está vacía
 	bool isEmpty();
-
-	//post: Devuelve la cantidd de elementos que tiene la lista
+	//post: Devuelve la cantidad de elementos que tiene la lista
 	unsigned int count();
 
 	//post: Agrega elemento al final de la lista
 	// posición: count() + 1
 	void append(T item);
-
 	//post: Agrega elemento al inicio de la lista
 	// posición: 1
 	void prepend(T item);
-
 	//post: Agrega elemento en la posición solicitada
 	// posición: conjunto [1, size]
 	void insert(T item, unsigned int pos);
-
 	//post: Agrega todos los elementos de otherList al final de la lista
 	// posición: count() + 1
 	void extend(List<T> & otherList);
@@ -46,11 +40,9 @@ public:
 	//pre: posición pertenece al intervalo [1, size]
 	//post: devuelve el elemento en la posición indicada
 	T get(unsigned int pos);
-
 	//pre: posición pertenece al intervalo [1, size]
 	//post: cambia elemento de posición indicada por elemento nuevo
 	void change(T item, unsigned int pos);
-
 	//pre: posición pertenece al intervalo [1, size]
 	//post: remueve de la List el elemento en la posición indicada
 	void remove(unsigned int pos);
@@ -58,13 +50,11 @@ public:
 	//CURSOR:
 	//post: deja cursor de List preparado para hacer un nuevo recorrido
 	void initCursor();
-
 	/* El siguiente meotdo permite moverse de un nodo al siguiente usando el cursor */
 	//pre: se ha iniciado el recorrido mediante el método initCursor()
 	//post: El valor de retorno indica si el cursor quedó posicionado sobre un elemento o no
 	//		(en caso de que la List esté vacía o no existan más elementos por recorrer.)
 	bool moveCursor();
-
 	//Pre: El cursor está posicionado sobre un elemento de la lista
 	//Post: Devuelve el elemento en la posición del cursor
 	T getCursor();
