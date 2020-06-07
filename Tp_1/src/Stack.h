@@ -10,18 +10,32 @@ private:
 	unsigned int size;
 
 public:
+	//Post: Stack Vacío
 	Stack();
+	//Post: Stack Copiado
 	Stack(Stack<T> & otherStack);
+	//Post: Libera los recursos asociados al Stack
 	~Stack();
 
+	//Post: Devuelve true si está vacía
 	bool isEmpty();
+	//Post: Devuelve la cantidad de elementos que tiene la lista
 	unsigned int count();
 
+	//Pre: La pila debe haber sido creada
+	//Post: Se modifica la pila al insertar un nuevo elemento en el tope.
 	void push(T item);
+
+	//Pre: La pila no debe estar vacía
+	//Post: La pila es modificada al perder el elemento en el tope.
 	void pop();
 
+	//Pre: La pila no debe estar vacía
+	//Post: Devuelve el valor almacenado en el tope.
 	T top();
 
+	//Pre: La pila debe haber sido creada. La otra también, y debe tener elementos.
+	//Post: Se cargan todos los elementos de la otra pila en la original.
 	void multiPush(Stack<T> & otherStack);
 };
 
