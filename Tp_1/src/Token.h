@@ -3,11 +3,11 @@
 // Falta:
 // 
 // - numeros de mas de 1 digito: DONE
-// - funciones: NO TENGO IDEA -- AYUDA
-// - variables: TENGO LA IDEA
+// - funciones: DONE
+// - variables: DONE
 //
 //
-// agregarle a la clase token el numero imaginario
+// Clase Token. 
 //
 #ifndef __TOKEN__
 #define __TOKEN__
@@ -48,6 +48,7 @@ public:
 	//			ln(): l
 	//			sin(): s
 	//			cos(): c
+	// 			modulo o Abs(): A
 	// espacio vacio ' ': blank 
 	// variable 'z': var
 	// No es un token valido: notk
@@ -93,21 +94,18 @@ public:
 	bool isNumber(); // Done
 	bool isFunction(); // Done
 	bool istoken(); // Done
-	bool isVariable();
+	bool isVariable(); // Done
+	bool isImag(); // Done
 
-
+	// Estos metodos que harian?
 	static int getInvalidStartOperators(int i);
 	static int getInvalidEndingOperators(int i);
 
 	static int getNumberOfInvalidStartOperators();
 	static int getNumberOfInvalidEndingOperators();
 
-
-
 };
 
-int __pow(int r, int k); // Habria que implementarlo para complejos
-Complejo apply_cmplx_operation(Complejo&, Complejo&, char); // Recibe dos complejos y le aplica la operacion + - * / falta potencia
-Complejo apply_func(Complejo& z, char); // Recibe un complejo y le aplica la funcion; Falta la mayoria...
+
 
 #endif

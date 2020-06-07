@@ -4,7 +4,6 @@ using namespace std;
 
 const static char __operators__[] = { '+', '-', '*', '/', '^' };
 const static char __separators__[] = { '(', ')' };
-const char __img_character__ = 'i'; // Esto eventualmente lo sacare
 
 const static char invalidStartOperators[]={'^','*','/',')',']','}'};
 const static char invalidEndingOperators[]={'^','*','/','(','{','{','+','-'};
@@ -19,6 +18,7 @@ Token::Token() {
 	// Por defecto si no llega a ser un operador
 	this->associativity = 0;
 	this->precedence = -1;
+	
 }
 Token::Token(char c) {
 
@@ -62,7 +62,6 @@ Token::Token(char c) {
 		default:
 			break;
 
-			// Falta implementar % y !
 		}
 	}
 
@@ -88,13 +87,18 @@ Token::Token(char c) {
 	}
 	if (isalpha(c)) {
 		if (c == 'i' )
-			this->type = "num";
+			this->type = "img";
 		else if (c == 'z') {
 			this->type = "var";
 			this->symbol = c;
+
 		}		
-		else
-		this->type = "func";
+		else{
+			this->type = "func";
+			this->precedence = 5;
+			this->associativity = 'r';
+		}
+		
 	}
 
 	// Chequeo si es un espacio en blanco
@@ -188,13 +192,17 @@ const Token& Token::operator=(char& c) {
 
 	if (isalpha(c)) {
 		if (c == 'i' )
-			this->type = "num";
+			this->type = "img";
 		else if (c == 'z') {
 			this->type = "var";
 			this->symbol = c;
 		}		
-		else
-		this->type = "func";
+		else{
+			this->type = "func";
+			this->precedence = 5;
+			this->associativity = 'r';
+		}
+		
 	}
 	return *this;
 }
@@ -273,13 +281,17 @@ const Token& Token::operator=(const char& c) {
 
 	if (isalpha(c)) {
 		if (c == 'i' )
-			this->type = "num";
+			this->type = "img";
 		else if (c == 'z') {
 			this->type = "var";
 			this->symbol = c;
 		}		
-		else
-		this->type = "func";
+		else{
+			this->type = "func";
+			this->precedence = 5;
+			this->associativity = 'r';
+		}
+		
 	}
 
 	return *this;
@@ -374,6 +386,11 @@ const Token& Token::operator=(string& s) {
 }
 */
 
+bool Token::isImag(){
+	if(this->type == "img")
+		return true;
+	return false;
+}
 bool Token::leftAssoc() {
 	if (this->associativity == 'l')
 		return true;
@@ -454,51 +471,4 @@ int Token::getInvalidStartOperators(int i)
 int Token::getInvalidEndingOperators(int i)
 {
 	return invalidEndingOperators[i];
-}
-
-
-
-Complejo apply_cmplx_operation(Complejo& z1, Complejo& z2, char op) {
-	switch (op) {
-	case '+':
-		return z1 + z2;
-		break;
-	case '-':
-		return z1 - z2;
-		break;
-	case '*':
-		return z1 * z2;
-		break;
-	case '/':
-		return z1 / z2;
-		break;
-	case '^':
-		//return __pow(val1, val2);
-		break;
-	default:
-		return Complejo(0, 0);
-		break;
-	}
-}
-
-Complejo apply_func(Complejo& z, char func) {
-
-	Complejo z_aux(0, 0);
-
-	switch (func) {
-	case 'e':
-		// Aplicar exponencial y devolver
-		break;
-	case 'l':
-		// Aplicar log y devolver
-		break;
-	case 'R':
-		z_aux.setReal(z.getReal());
-		return z_aux;
-		break;
-	case 'I':
-		z_aux.setImag(z.getImag());
-		return z_aux;
-		break;
-	}
 }

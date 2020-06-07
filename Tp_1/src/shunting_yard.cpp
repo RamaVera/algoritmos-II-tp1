@@ -1,23 +1,51 @@
+//
+// 
+// Implementacion del algoritmo shunting yard. Recibe una cadena* que representa la funcion a evaluar
+// y el valor de la variable z. Dentro de una pila llamada cmplx_values, se ira almacenando el resultado
+// de haber hecho la operacion entre numeros complejos. Al finalizar, la pila solo contendra el resultado final.
+// El algoritmo recorre toda la cadena, apila los operadores en un stack, y el resultado en otro stack.
+//
+// *
+// PRECONDICION: La cadena debera estar correcta de sintaxis:
+// Solo es valido:
+// Cadenas balanceadas del tipo a+b*i
+// FUnciones de un caracter: log --> l ; exp --> e ; Imag -- > I ; Re --> R;
+// 
+// METODO De la clase ComplexTransform.
+// 
 #include "Token.h"
+#include "Complejo.h"
+#include <math.h> // cos y seno
 #include <stack> // Implementarlo nosotros
-#include <queue> // implementarlo nosotros
 #include <iostream>
 
 
+// Realiza la operacion pasada por Token entre complejos y lo pushea en un stack. 
+// Usa las funciones __apply_cmplx_operation y __ apply_func
+//
+void apply_operation(stack <Complejo> &, Token &);// DEberia ser const TOken &, pero para eso todos los metodos deberian ser con const
+
+Complejo __apply_cmplx_operation(Complejo&, Complejo&, char); // Recibe dos complejos y le aplica la operacion
+
+// Recibe un complejo y le aplica la funcion; OJO: Los caracteres identificatorios DEBEN COINCIDIR con los de 
+// la clase Token;; 
+//
+Complejo __apply_func(Complejo& z, char); 
+
+
 // ==================================================================================================================================== //
 // ==================================================================================================================================== //
 
-const char __img_character__ = 'i'; // Esto eventualmente lo sacare
 
-const string eq = "z+z";
+const string eq2 = "z+z"; // SOlo de pruebas
 
 int main(int argc, char* argv[]) {
 
 	//std::cout << argv[1] << endl;
-	const string eq2 = argv[1];
+	const string eq = argv[1];
 	std::cout << eq << endl;
 
-	// Hay un problema con la division de complejos
+	int a = (argv[2][0]) - '0'; int b = (argv[3][0]) - '0';
 
 	// Stack de operadores
 	stack <char> ops;
@@ -26,10 +54,9 @@ int main(int argc, char* argv[]) {
 
 	Token token;
 	Token toptoken;
-	Token prev_token;
 	Token next_token;
 
-	Complejo z(2, 2);
+	Complejo z(a, b);
 
 	size_t i = 0;
 
@@ -43,15 +70,7 @@ int main(int argc, char* argv[]) {
 
 		// Leo un token
 		token = eq[i];
-		if (i == 0)
-			prev_token = eq[i];
-		else
-			prev_token = eq[i - 1];
-		if (i == eq.length() - 1)
-			next_token = eq[i];
-		else
-			next_token = eq[i + 1];
-
+	
 		// SI no es un token valido: No es numero, operador, parentesis, letra reservada para funcion, o espacio en blanco
 		if (!token.istoken()) {
 			std::cerr << "ecuacion no valida" << endl;
@@ -59,7 +78,7 @@ int main(int argc, char* argv[]) {
 		}
 
 		// Si el token es un numero
-		if (token.isNumber()) {
+		if (token.isNumber() || token.isImag()) {
 
 			next_token = eq[i];
 			Complejo z_aux(0, 0); // No se si es bueno llamar al constructor en cada iteracion, pero bueno que seyooo
@@ -68,8 +87,8 @@ int main(int argc, char* argv[]) {
 			// Lo que se hara es ver si el numero es de + de 1 digito
 			// se recorre hasta que no haya mas enteros a leer
 			//
-			while (next_token.isNumber() && i < eq.length()) {
-				if (next_token.sym() == __img_character__)
+			while ((next_token.isNumber() || next_token.isImag()) && i < eq.length()) {
+				if (next_token.isImag())
 					z_aux.setImag(1);
 				else {
 
@@ -99,14 +118,11 @@ int main(int argc, char* argv[]) {
 		}
 
 
-		// Si el token es un operador
-		//
-		// Si sucdio esto: ++ o ** o //
-		else if (token.isOperator() && prev_token.isOperator() && i != 0) {
-			cerr << "error de sintaxis" << endl;
-			exit(1);
+		else if(token.isFunction()){
+			ops.push(token.sym());
 		}
-		else if (token.isOperator()) {
+
+		else if (token.isOperator() ) {
 			//
 			// Mientras que haya un operador para sacar en la pila de ops., 
 			// y el operador en el tope de la pila ops tenga mayor precedencia que el token 
@@ -134,15 +150,10 @@ int main(int argc, char* argv[]) {
 					//
 					// Realizo la operacion dentro de los parentesis:
 					//
-					// Tomo los dos operandos de la pila de values
 					//
-					Complejo z2(cmplx_values.top().getReal(), cmplx_values.top().getImag());
-					cmplx_values.pop();
-
-					Complejo z1(cmplx_values.top().getReal(), cmplx_values.top().getImag());
-					cmplx_values.pop();
-
-					cmplx_values.push(apply_cmplx_operation(z1, z2, toptoken.sym()));
+					//
+					apply_operation(cmplx_values, toptoken);
+					
 
 					// Uso el token del tope de la pila, para la siguiente evaluacion del while
 					if (!ops.empty())
@@ -168,22 +179,12 @@ int main(int argc, char* argv[]) {
 				toptoken = ops.top();
 
 				while (!toptoken.sepLeft()) {
-
 					//
 					// Realizo la operacion dentro de los parentesis:
 					//
-					// Tomo los dos operandos de la pila de values
-					//
-					Complejo z2(cmplx_values.top().getReal(), cmplx_values.top().getImag());
-					cmplx_values.pop();
-
-					Complejo z1(cmplx_values.top().getReal(), cmplx_values.top().getImag());
-					cmplx_values.pop();
-					//
+					apply_operation(cmplx_values, toptoken);
 
 					ops.pop();
-					// Se realiza la operacion y se manda a la pila de resultados
-					cmplx_values.push(apply_cmplx_operation(z1, z2, toptoken.sym()));
 
 					// SI el stack se acabo, y no encontro ningun parentesis(while no finaliza):
 					if (ops.empty()) {
@@ -226,14 +227,7 @@ int main(int argc, char* argv[]) {
 			exit(1);
 		}
 
-		Complejo z2(cmplx_values.top().getReal(), cmplx_values.top().getImag());
-		cmplx_values.pop();
-
-		Complejo z1(cmplx_values.top().getReal(), cmplx_values.top().getImag());
-		cmplx_values.pop();
-
-		cmplx_values.push(apply_cmplx_operation(z1, z2, toptoken.sym()));
-
+		apply_operation(cmplx_values, toptoken);
 	}
 	//
 	// Fin de parseo
@@ -246,3 +240,88 @@ int main(int argc, char* argv[]) {
 
 // ==================================================================================================================================== //
 // ==================================================================================================================================== //
+
+
+
+
+Complejo __apply_cmplx_operation(Complejo& z1, Complejo& z2, char op) {
+	switch (op) {
+	case '+':
+		return z1 + z2;
+		break;
+	case '-':
+		return z1 - z2;
+		break;
+	case '*':
+		return z1 * z2;
+		break;
+	case '/':
+		return z1 / z2;
+		break;
+	case '^':
+		return z1 ^ z2;
+		break;
+	default:
+		return Complejo(0, 0);
+		break;
+	}
+}
+
+Complejo __apply_func(Complejo& z, char func) {
+
+	Complejo z_aux(0, 0);
+
+	switch (func) {
+
+	// exp(z)
+	case 'e':
+		z_aux.setReal( exp(z.getReal()) * cos(z.getImag()) );
+		z_aux.setImag( exp(z.getReal()) * sin(z.getImag()) );
+		return z_aux;
+	break;
+
+	// log(z)
+	case 'l':
+		return log(z);
+	break;
+
+	// Re(z)
+	case 'R':
+		z_aux.setReal(z.getReal());
+		return z_aux;
+	break;
+
+	// Im(z)
+	case 'I':
+		z_aux.setReal(z.getImag());
+		return z_aux;
+	break;
+
+	default:
+		return z_aux;
+	break;
+	}
+
+}
+
+void apply_operation(stack <Complejo> & cmplx_values, Token & toptoken){
+
+	if(toptoken.isFunction()){
+
+		Complejo z2(cmplx_values.top().getReal(), cmplx_values.top().getImag());
+		cmplx_values.pop();
+
+		cmplx_values.push(__apply_func(z2, toptoken.sym()));							
+
+		} else {
+
+		Complejo z2(cmplx_values.top().getReal(), cmplx_values.top().getImag());
+		cmplx_values.pop();
+
+		Complejo z1(cmplx_values.top().getReal(), cmplx_values.top().getImag());
+		cmplx_values.pop();
+
+		cmplx_values.push(__apply_cmplx_operation(z1, z2, toptoken.sym()));	
+	}
+
+}
