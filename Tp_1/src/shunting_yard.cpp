@@ -78,26 +78,62 @@ int main(int argc, char* argv[]) {
 		}
 
 		// Si el token es un numero
-		if (token.isNumber() || token.isImag()) {
+		if (token.isNumber() || token.isImag() || next_token.sym() == '.') {
 
 			next_token = eq[i];
+
 			Complejo z_aux(0, 0); // No se si es bueno llamar al constructor en cada iteracion, pero bueno que seyooo
-			int val = 0;
 
-			// Lo que se hara es ver si el numero es de + de 1 digito
-			// se recorre hasta que no haya mas enteros a leer
+			double val = 0; // En val se guardara el numero real 
+			double frac = 0.1; 
+
+			int dots = 0; // Sirve para ver si se ingreso mas de un punto consecutivo
+
+			bool imagFlag = false; // Sirve para validar que no se haya ingresado un i consecutivo o previo a un numero sin el *
+			bool numFlag = false; 
+			bool dotFlag = false; // Dice si se ingreso un punto, para saber que hay que trabajar en la parte decimal del numero
+
+			// Lo que se hara es ver si el numero es de + de 1 digito o si hay parte decimal
+			// se recorre hasta que no haya mas enteros a leer o que 
 			//
-			while ((next_token.isNumber() || next_token.isImag()) && i < eq.length()) {
-				if (next_token.isImag())
+			while ((next_token.isNumber() || next_token.isImag() || next_token.sym() == '.') && i < eq.length()) {
+				
+				if(imagFlag || (dots != 0 && dots != 1) ){
+					// Si ya hubo un numero imaginario, y se ingreso otro consecutivo es error de sintaxis
+					exit(1);
+					std::cerr << "error de sintaxis" << std::endl;
+				} 
+
+				if (next_token.isImag()){
+
+					if(numFlag){
+						// Si hubo un numero y consecutivamente un numero imaginario, es error sintaxis
+						exit(1);
+						std::cerr << "error de sintaxis" << std::endl;		
+					}
+
 					z_aux.setImag(1);
-				else {
+					imagFlag = true;
+				}
+				else if(next_token.isNumber()) {
 
+					numFlag = true;
 
-					// Se almacena en val susecivamente los enteros de 1 digito
-					//
-					val = (val * 10) + (next_token.sym() - '0');
+					if(!dotFlag){
+						// Se almacena en val susecivamente los enteros de 1 digito
+						//
+						val = (val * 10) + (next_token.sym() - '0'); // Restarle cero para que el char lo lea como int
+					} else {
+						val = val + (next_token.sym() - '0') * frac;
+						frac = frac * 0.1;
+					}
 
 				}
+				else if(next_token.sym() == '.'){
+					dots++;
+					dotFlag = true;
+				}
+					
 
 				// Se lee el siguiente token
 				i++;
