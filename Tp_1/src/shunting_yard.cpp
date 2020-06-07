@@ -1,4 +1,4 @@
-//
+// VALIDAR QUE NO HAYA UN PUNTO SI EL TOKEN PREVIO Y SIGUIENTE NO SON NUMEROS!
 // 
 // Implementacion del algoritmo shunting yard. Recibe una cadena* que representa la funcion a evaluar
 // y el valor de la variable z. Dentro de una pila llamada cmplx_values, se ira almacenando el resultado
