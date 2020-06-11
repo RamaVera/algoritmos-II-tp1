@@ -1,8 +1,5 @@
 #include "ComplexTransform.h"
-#include "Token.h"
-#include "Stack.h"
-#include <string>
-#include <math.h> // Para coseno seno y exp
+
 
 const static string __functions__[] = { "exp", "min", "max", "exp", "Rel", "Img", "log", "cos", "sin" };
 std::string ComplexTransform::userFunction;
@@ -182,6 +179,25 @@ bool ComplexTransform::isOnValidFunctionTable(string fun )
 	return functionIsOnTable;
 }
 
+std::string ComplexTransform::parseExpresion( std::string inputExpresion)
+ {
+	std::string outputExpresion = inputExpresion;
+	int L = outputExpresion.length();
+
+	for(int i = 0 ; i < L ; ++i)
+	{
+		Token token = outputExpresion[i];
+		if( token.isFunction() )
+		{
+			outputExpresion.replace(i,3,outputExpresion.substr(i,1));
+			//cout<< outputExpresion << endl;
+			L = outputExpresion.length();
+		}
+	}
+	return outputExpresion;
+
+ }
+
 // ==================================================================================================================================== //
 //								Implementacion del algoritmo para evaluar una cadena en formato rpn (?? 
 // ==================================================================================================================================== //
@@ -239,13 +255,13 @@ void ComplexTransform::fun(Complejo & input){
 
 	// Arranca la evaluacion de la cadena
 	// 
-	while (i < userFunction.length()) {
+	while (i < function.length()) {
 		//
 		// Mientras que haya tokens para leer:
 		//
 
 		// Leo un token
-		token = userFunction[i];
+		token = function[i];
 	
 		// SI no es un token valido: No es numero, operador, parentesis, letra reservada para funcion, o espacio en blanco
 		if (!token.istoken()) {
@@ -256,7 +272,7 @@ void ComplexTransform::fun(Complejo & input){
 		// Si el token es un numero
 		if (token.isNumber() || token.isImag() || next_token.sym() == '.') {
 
-			next_token = userFunction[i];
+			next_token = function[i];
 
 			Complejo z_aux(0, 0); // No se si es bueno llamar al constructor en cada iteracion, pero bueno que seyooo
 
@@ -313,7 +329,7 @@ void ComplexTransform::fun(Complejo & input){
 
 				// Se lee el siguiente token
 				i++;
-				next_token = userFunction[i];
+				next_token = function[i];
 			}
 
 			z_aux.setReal((double)val);

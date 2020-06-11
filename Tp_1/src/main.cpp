@@ -59,7 +59,7 @@ int main(int argc, char * const argv[]){
 	cmdline cmdl(options);
 	cmdl.parse(argc, argv);
 
-/*
+
 	//------Creo Imagenes de origen y destino ------//
 	Images origen;
 	origen.loadFile(iss);
@@ -74,7 +74,7 @@ int main(int argc, char * const argv[]){
 	if(oss != &cout)
 		ofs.close();
 
-*/
+
 	return 0;
 }
 
@@ -209,9 +209,13 @@ opt_function(string const &arg)
 	switch(Status)
 	{
 	case TransformStatus::funtionIsOk:
+		{
 		cout << "La funcion se ingreso correctamente "<< endl;
-		ComplexTransform::setTransform(transformString);
+		string parsedString = ComplexTransform::parseExpresion(transformString);
+		cout<< "La transformacion elegida es f(z)= " << parsedString <<endl;
+		ComplexTransform::setTransform(parsedString);
 		break;
+		}
 	case TransformStatus::functionIsNotBalanced:
 		cerr << "La funcion ingresada no esta balanceada "<< endl;
 		exit(1);

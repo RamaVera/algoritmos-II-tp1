@@ -5,7 +5,9 @@
 #include "Token.h"
 #include "Stack.h"
 #include <iostream>
-#include <cctype> //isalpha
+#include <cctype>  //isalpha
+#include <string>
+#include <math.h> // Para coseno seno y exp
 
 
 enum class TransformStatus
@@ -42,6 +44,7 @@ public:
 	static int getNumberOfValidFunctions();
 	static string getValidFunctions(int i);
 	static bool isOnValidFunctionTable(string fun);
+	static std::string parseExpresion( std::string);
 
 
 };
