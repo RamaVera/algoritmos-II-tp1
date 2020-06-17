@@ -1,4 +1,12 @@
-
+//
+//
+// Falta:
+// 
+// - numeros de mas de 1 digito: DONE
+// - funciones: DONE
+// - variables: DONE
+//
+//
 // Clase Token. 
 //
 #ifndef __TOKEN__
@@ -89,7 +97,6 @@ public:
 	bool isVariable(); // Done
 	bool isImag(); // Done
 
-	// Estos metodos que harian?
 	static int getInvalidStartOperators(int i);
 	static int getInvalidEndingOperators(int i);
 

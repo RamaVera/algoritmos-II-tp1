@@ -1,5 +1,5 @@
 #include "ComplexTransform.h"
-
+#include <math.h>
 
 const static string __functions__[] = { "exp", "min", "max", "exp", "Rel", "Img", "log", "cos", "sin" };
 std::string ComplexTransform::userFunction;
@@ -522,6 +522,18 @@ Complejo __apply_func(Complejo& z, char func) {
 	// Im(z)
 	case 'I':
 		z_aux.setReal(z.getImag());
+		return z_aux;
+	break;
+
+	case 'c':
+		z_aux.setReal(cos(z.getReal()) * cosh(z.getImag()) );
+		z_aux.setImag(-1*sin(z.getReal()) * sinh(z.getImag()));
+		return z_aux;
+	break;
+
+	case 's':
+		z_aux.setReal(sin(z.getReal()) * cosh(z.getImag()) );
+		z_aux.setImag(cos(z.getReal()) * sinh(z.getImag()));
 		return z_aux;
 	break;
 
