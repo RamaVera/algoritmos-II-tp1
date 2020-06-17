@@ -1,12 +1,4 @@
-//
-//
-// Falta:
-// 
-// - numeros de mas de 1 digito: DONE
-// - funciones: DONE
-// - variables: DONE
-//
-//
+
 // Clase Token. 
 //
 #ifndef __TOKEN__
