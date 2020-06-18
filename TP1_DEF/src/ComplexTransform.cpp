@@ -307,11 +307,11 @@ void ComplexTransform::fun(Complejo & input){
 		// SI no es un token valido: No es numero, operador, parentesis, letra reservada para funcion, o espacio en blanco
 		if (!token.istoken()) {
 			std::cerr << "ecuacion no valida" << endl;
-			exit(1);
+			std::abort();
 		}
 
 		// Si el token es un numero
-		if (token.isNumber() || token.isImag() || next_token.sym() == '.') {
+		if (token.isNumber() || token.isImag() || next_token.sym() == '.' || next_token.sym() == ',') {
 
 			next_token = function[i];
 
@@ -329,20 +329,21 @@ void ComplexTransform::fun(Complejo & input){
 			// Lo que se hara es ver si el numero es de + de 1 digito o si hay parte decimal
 			// se recorre hasta que no haya mas enteros a leer o que 
 			//
-			while ((next_token.isNumber() || next_token.isImag() || next_token.sym() == '.') && i < userFunction.length()) {
+			while ((next_token.isNumber() || next_token.isImag() || next_token.sym() == '.' || next_token.sym() == ',') && i < userFunction.length()) {
 				
 				if(imagFlag || (dots != 0 && dots != 1) ){
 					// Si ya hubo un numero imaginario, y se ingreso otro consecutivo es error de sintaxis
-					exit(1);
 					std::cerr << "error de sintaxis" << std::endl;
+					std::abort();
 				} 
 
 				if (next_token.isImag()){
 
 					if(numFlag){
 						// Si hubo un numero y consecutivamente un numero imaginario, es error sintaxis
-						exit(1);
 						std::cerr << "error de sintaxis" << std::endl;		
+						std::abort();
+						
 					}
 
 					z_aux.setImag(1);
@@ -362,7 +363,7 @@ void ComplexTransform::fun(Complejo & input){
 					}
 
 				}
-				else if(next_token.sym() == '.'){
+				else if(next_token.sym() == '.' || next_token.sym() == ','){
 					dots++;
 					dotFlag = true;
 				}
@@ -458,7 +459,7 @@ void ComplexTransform::fun(Complejo & input){
 					// SI el stack se acabo, y no encontro ningun parentesis(while no finaliza):
 					if (ops.isEmpty()) {
 						std::cerr << "equation isn't balanced" << endl;
-						exit(1);
+						std::abort();
 					}
 
 					toptoken = ops.top();
@@ -472,7 +473,7 @@ void ComplexTransform::fun(Complejo & input){
 			// Si el stack estuviera vacio seria esta sitacion : ")...", quiere decir que esta desbalanceado, mala suerte...
 			else {
 				cerr << "equation isn't balanced" << endl;
-				exit(1);
+				std::abort();
 			}
 
 		}
@@ -493,7 +494,7 @@ void ComplexTransform::fun(Complejo & input){
 		//
 		if (toptoken.sepLeft() || toptoken.sepRight()) {
 			cerr << "equation isn't balanced" << endl;
-			exit(1);
+			std::abort();
 		}
 
 		apply_operation(cmplx_values, toptoken);
