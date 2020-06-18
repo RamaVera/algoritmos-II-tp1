@@ -123,14 +123,20 @@ bool ComplexTransform::hasOperatorError(std::string transformString)
 	{
 		Token prevToken = transformString[i-1];
 		Token token = transformString[i];
-
 		// Chequeo si tiene expresiones binarias invalidas de caracteres (--, ++, +*, etc)
 		if( ( prevToken.isOperator() )  && ( token.isOperator() ) ) 	return true;
+		if( ( prevToken.symbol == '.')  && ( token.symbol == '.') )		return true; //..
+		if( ( prevToken.symbol == ',')  && ( token.symbol == ',') )		return true; // ,,
 		// Chequeo si tiene expresiones binarias invalidas de numeros complejos ( i5, ii, z5, zz etc)
 		if( ( prevToken.isImag() 	 ) 	&& ( token.isImag()     ) ) 	return true; // ii
 		if( ( prevToken.isVariable() )  && ( token.isVariable() ) )		return true; // zz
 		if( ( prevToken.isVariable() )  && ( token.isNumber()   ) )		return true; // z4 se considera error sintantico
 		if( ( prevToken.isImag() 	 )  && ( token.isNumber()   ) )		return true; // i5 se considera error sintantico
+		if( ( prevToken.symbol == '.') 	&& ( token.isVariable() ) )		return true; // .z
+		if( ( prevToken.symbol == ',') 	&& ( token.isVariable() ) )		return true; // ,z
+		if( ( !prevToken.isNumber()  ) 	&& ( token.symbol == '.') )		return true; // el punto solo despues de un numero
+		if( ( !prevToken.isNumber()  ) 	&& ( token.symbol == ',') )		return true; // la coma solo despues de un numero
+
 		// Si el token es un caracter alfanumerico (excepto z o i) tiene que pertenecer a una funcion
 		if(   prevToken.isFunction() )
 		{
@@ -183,11 +189,16 @@ bool ComplexTransform::isOnValidFunctionTable(string fun )
 std::string ComplexTransform::parseExpresion( std::string inputExpresion )
  {
 	std::string outputExpresion = inputExpresion;
+	if( outputExpresion[0] == '+' || outputExpresion[0] == '-' )
+	{
+		outputExpresion.insert(0,1,'0');
+	}
 	int L = outputExpresion.length();
 	for(int i = 1 ; i < L ; ++i)
 	{
 		Token prevToken = outputExpresion[i-1];
 		Token token = outputExpresion[i];
+
 
 		if( prevToken.isFunction() )
 		{
@@ -208,6 +219,20 @@ std::string ComplexTransform::parseExpresion( std::string inputExpresion )
 				len =-1;
 			}
 		}
+
+		if( ( prevToken.isNumber()  )  && ( token.isVariable()  ) )
+		{
+			outputExpresion.insert(i,1,'*');
+			cout<< outputExpresion <<endl;
+			L = outputExpresion.length();
+
+		}	
+		if( ( prevToken.isNumber() 	)  && ( token.isImag()   	) )	
+		{
+			outputExpresion.insert(i,1,'*');
+			L = outputExpresion.length();
+		}
+
 	}
 	return outputExpresion;
  }
