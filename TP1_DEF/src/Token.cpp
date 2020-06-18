@@ -442,6 +442,12 @@ bool Token::isVariable() {
 	return false;
 }
 
+bool Token::isBlanck() {
+	if (this->type == "blank")
+		return true;
+	return false;
+}
+
 char Token::sym() {
 
 	return this->symbol;

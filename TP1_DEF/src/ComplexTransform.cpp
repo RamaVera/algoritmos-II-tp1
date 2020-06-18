@@ -123,6 +123,8 @@ bool ComplexTransform::hasOperatorError(std::string transformString)
 	{
 		Token prevToken = transformString[i-1];
 		Token token = transformString[i];
+
+		if(   prevToken.isBlanck() 	 ) 									return true;
 		// Chequeo si tiene expresiones binarias invalidas de caracteres (--, ++, +*, etc)
 		if( ( prevToken.isOperator() )  && ( token.isOperator() ) ) 	return true;
 		if( ( prevToken.symbol == '.')  && ( token.symbol == '.') )		return true; //..

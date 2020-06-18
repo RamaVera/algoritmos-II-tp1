@@ -86,6 +86,7 @@ public:
 	bool istoken(); // Done
 	bool isVariable(); // Done
 	bool isImag(); // Done
+	bool isBlanck(); //Done
 
 	static int getInvalidStartOperators(int i);
 	static int getInvalidEndingOperators(int i);

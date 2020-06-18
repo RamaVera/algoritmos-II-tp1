@@ -255,6 +255,7 @@ opt_help(string const &arg)
 {
 	cout << "cmdline [-f function] [-i file] [-o file]" << endl;
 	cout << "Funciones Admitidas: exp, Re, Im, log, cos, sen " << endl;
+	cout << "Las expresiones matematicas no deben tener espacios en blanco " << endl;
 	std::abort();
 }
 
