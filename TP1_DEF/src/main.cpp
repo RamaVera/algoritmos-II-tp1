@@ -83,15 +83,16 @@ int main(int argc, char * const argv[]){
 
 	} else {
 
-		//------		Valido si la imagen es PGM 			 ------//
-		//------Se abre en funcion si el archivo es PGM o no ------//
-		if(!openOutputFile())
-			return 1;
+		//------SI la entrada es pgm valida ------//
 
 		Images destino(origen);
 
 		//------Trasnformo y guardo ------//
 		transformar_imagen(origen,destino);
+
+		//------Se abre en funcion si el archivo es PGM o no ------//
+		if(!openOutputFile())
+			return 1;
 
 		std::cout << "Guardando imagen..." << std::endl;
 		destino.saveFile(oss);
@@ -208,7 +209,7 @@ opt_output(string const &arg)
 static void
 opt_function(string const &arg)
 {
-	istringstream iss(arg);
+	stringstream iss(arg);
 	cout<< "La transformacion elegida es f(z)= " <<arg.c_str() <<endl;
 
 	// Intentamos extraer el factor de la l?ea de comandos.
@@ -217,8 +218,8 @@ opt_function(string const &arg)
 	// despu? de la lectura exitosa del escalar.
 	//
 	string transformString;
-	iss >> transformString;
-
+	//iss >> transformString;
+	transformString = iss.str();
 	if (iss.bad()) {
 		cerr << "cannot read integer factor."
 			 << endl;
