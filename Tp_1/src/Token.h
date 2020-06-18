@@ -46,7 +46,7 @@ public:
 	//			Im(): I
 	//			exp(): e
 	//			ln(): l
-	//			sin(): s
+	//			sen(): s
 	//			cos(): c
 	// 			modulo o Abs(): A
 	// espacio vacio ' ': blank 

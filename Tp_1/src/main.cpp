@@ -2,7 +2,7 @@
 // Name        : main.cpp
 // Author      : Nacachian, Urquiza, Vera
 // Version     : 1.1.1
-// Description : Trabajo Práctico Nro. 0
+// Description : Trabajo Practico Nro. 1
 //============================================================================
 
 
@@ -153,7 +153,7 @@ opt_input(string const &arg)
 		     << arg
 		     << "."
 		     << endl;
-		exit(1);
+		std::abort();
 	}
 }
 
@@ -181,7 +181,7 @@ opt_output(string const &arg)
 		     << arg
 		     << "."
 		     << endl;
-		exit(1);		// EXIT: Terminaci? del programa en su totalidad
+		std::abort();		// EXIT: Terminaci? del programa en su totalidad
 	}
 }
 
@@ -202,7 +202,7 @@ opt_function(string const &arg)
 	if (iss.bad()) {
 		cerr << "cannot read integer factor."
 			 << endl;
-		exit(1);
+		std::abort();
 	}
 
 	TransformStatus Status = ComplexTransform::isGoodExpresion(transformString);
@@ -218,23 +218,23 @@ opt_function(string const &arg)
 		}
 	case TransformStatus::functionIsNotBalanced:
 		cerr << "La funcion ingresada no esta balanceada "<< endl;
-		exit(1);
+		std::abort();
 		break;
 	case TransformStatus::functionHasOperatorError:
 		cerr <<" La funcion ingresada tiene un error de sintaxis debido a un caracter "<< endl;
-		exit(1);
+		std::abort();
 		break;
 	default:
 		cerr <<" Error desconocido "<< endl;
-		exit(1);
+		std::abort();
 	}
 }
 
 static void
 opt_help(string const &arg)
 {
-	cout << "cmdline [-f function] [-i file] [-o file]"
-	     << endl;
-	exit(0);
+	cout << "cmdline [-f function] [-i file] [-o file]" << endl;
+	cout << "Funciones Admitidas: exp, Re, Im, log, cos, sen " << endl;
+	std::abort();
 }
 

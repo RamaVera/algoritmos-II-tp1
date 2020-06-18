@@ -1,7 +1,7 @@
 #include "ComplexTransform.h"
 
 
-const static string __functions__[] = { "exp", "min", "max", "exp", "Rel", "Img", "log", "cos", "sin" };
+const static string __functions__[] = { "exp", "Re", "Im", "log", "cos", "sen" };
 std::string ComplexTransform::userFunction;
 
 ComplexTransform::ComplexTransform(){
@@ -125,23 +125,27 @@ bool ComplexTransform::hasOperatorError(std::string transformString)
 		Token token = transformString[i];
 
 		// Chequeo si tiene expresiones binarias invalidas de caracteres (--, ++, +*, etc)
-		if( ( prevToken.isOperator() ) && ( token.isOperator() ) ) 	return true;
-
-		// Chequeo si tiene expresiones binarias invalidas de numeros complejos ( 5i, ii, z5, zz etc)
-		if( ( prevToken.isNumber() ) 	&& ( token.sym() == 'i' ) ) 	return true;
-		if( ( prevToken.sym() == 'z')  && ( token.isNumber() ) )		return true;
-
+		if( ( prevToken.isOperator() )  && ( token.isOperator() ) ) 	return true;
+		// Chequeo si tiene expresiones binarias invalidas de numeros complejos ( i5, ii, z5, zz etc)
+		if( ( prevToken.isImag() 	 ) 	&& ( token.isImag()     ) ) 	return true; // ii
+		if( ( prevToken.isVariable() )  && ( token.isVariable() ) )		return true; // zz
+		if( ( prevToken.isVariable() )  && ( token.isNumber()   ) )		return true; // z4 se considera error sintantico
+		if( ( prevToken.isImag() 	 )  && ( token.isNumber()   ) )		return true; // i5 se considera error sintantico
 		// Si el token es un caracter alfanumerico (excepto z o i) tiene que pertenecer a una funcion
-		if( prevToken.isFunction() )
+		if(   prevToken.isFunction() )
 		{
-			// Chequeo que la funcion este en la lista de funciones validas
-			std::string funExpresion = transformString.substr (i-1,3);
-			if( ComplexTransform::isOnValidFunctionTable(funExpresion) == false )
-			{
-				cerr << funExpresion << " No es una funcion valida : Recuerde las funciones se escriben en minuscula" << endl;
-				return true;
+			static string funExpresion;
+			funExpresion += prevToken.symbol;
+			if( token.sepLeft() )
+			{	// Chequeo que la funcion este en la lista de funciones validas
+				cout << "Se detecto la funcion " << funExpresion << endl;
+				if( ComplexTransform::isOnValidFunctionTable(funExpresion) == false )
+				{
+					cerr << funExpresion << " No es una funcion valida : Escriba -h para ayuda y ver las funciones validas" << endl;
+					return true;
+				}
+				funExpresion.clear();
 			}
-			i=i+2;
 		}
 	}
 
@@ -162,9 +166,6 @@ bool ComplexTransform::hasOperatorError(std::string transformString)
 
 bool ComplexTransform::isOnValidFunctionTable(string fun )
 {
-	//@TODO
-	// Las funciones deben tener un ancho de 3 (se puede hacer un resize)
-	// Las funciones distinguen minisculas o mayus (se puede hacer un tolower a todo antes de comparar)
 
 	size_t F = ComplexTransform::getNumberOfValidFunctions();
 	bool functionIsOnTable = false;
@@ -179,23 +180,36 @@ bool ComplexTransform::isOnValidFunctionTable(string fun )
 	return functionIsOnTable;
 }
 
-std::string ComplexTransform::parseExpresion( std::string inputExpresion)
+std::string ComplexTransform::parseExpresion( std::string inputExpresion )
  {
 	std::string outputExpresion = inputExpresion;
 	int L = outputExpresion.length();
-
-	for(int i = 0 ; i < L ; ++i)
+	for(int i = 1 ; i < L ; ++i)
 	{
+		Token prevToken = outputExpresion[i-1];
 		Token token = outputExpresion[i];
-		if( token.isFunction() )
+
+		if( prevToken.isFunction() )
 		{
-			outputExpresion.replace(i,3,outputExpresion.substr(i,1));
-			//cout<< outputExpresion << endl;
-			L = outputExpresion.length();
+			static int len = -1;
+			static bool setPos = false;
+			static int pos;
+			if( setPos == false )
+			{
+				pos = i;
+				setPos = true;
+			}
+			len+=1;
+			if( token.sepLeft() )
+			{
+				outputExpresion.erase(pos,len);
+				L = outputExpresion.length();
+				setPos=false;
+				len =-1;
+			}
 		}
 	}
 	return outputExpresion;
-
  }
 
 // ==================================================================================================================================== //
@@ -523,6 +537,20 @@ Complejo __apply_func(Complejo& z, char func) {
 	case 'I':
 		z_aux.setReal(z.getImag());
 		return z_aux;
+	break;
+
+	// sen(z)
+	case 's':
+			z_aux.setReal( sin(z.getReal()) * cosh(z.getImag()) );
+			z_aux.setImag( cos(z.getReal()) * sinh(z.getImag()) );
+			return z_aux;
+	break;
+
+	// cos(z)
+	case 'c':
+			z_aux.setReal( cos(z.getReal()) * cosh(z.getImag()) );
+			z_aux.setImag( sin(z.getReal()) * sinh(z.getImag()) );
+			return z_aux;
 	break;
 
 	default:
