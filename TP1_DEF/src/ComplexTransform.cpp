@@ -190,52 +190,36 @@ bool ComplexTransform::isOnValidFunctionTable(string fun )
 
 std::string ComplexTransform::parseExpresion( std::string inputExpresion )
  {
-	std::string outputExpresion = inputExpresion;
-	if( outputExpresion[0] == '+' || outputExpresion[0] == '-' )
+	std::string outputExpresion;;
+	std::string aux;
+	std::string::iterator it;
+	static bool functionDetected = false;
+	static bool numberDetected = false;
+	if( inputExpresion[0] == '+' || inputExpresion[0] == '-' )
 	{
 		outputExpresion.insert(0,1,'0');
 	}
-	int L = outputExpresion.length();
-	for(int i = 1 ; i < L ; ++i)
+
+
+	for(it = inputExpresion.begin() ; it < inputExpresion.end() ; it++)
 	{
-		Token prevToken = outputExpresion[i-1];
-		Token token = outputExpresion[i];
 
+		Token token = *it;
 
-		if( prevToken.isFunction() )
+		if( 	 (token.isFunction() ) && ( functionDetected == false )){ functionDetected = true; }
+		else if( (token.isFunction() ) && ( functionDetected == true  )){ continue; 			   }
+		else if( (token.sepLeft()    ) && ( functionDetected == true  )){ functionDetected = false;}
+		else if( (token.isNumber()   ) && ( numberDetected == false   )){ numberDetected   = true; }
+		else if( numberDetected == true)
 		{
-			static int len = -1;
-			static bool setPos = false;
-			static int pos;
-			if( setPos == false )
-			{
-				pos = i;
-				setPos = true;
-			}
-			len+=1;
-			if( token.sepLeft() )
-			{
-				outputExpresion.erase(pos,len);
-				L = outputExpresion.length();
-				setPos=false;
-				len =-1;
-			}
-		}
+			if(  token.isVariable() ) { aux+='*'; }
+			if(  token.isImag()     ) { aux+='*'; }
+		}  
 
-		if( ( prevToken.isNumber()  )  && ( token.isVariable()  ) )
-		{
-			outputExpresion.insert(i,1,'*');
-			cout<< outputExpresion <<endl;
-			L = outputExpresion.length();
 
-		}	
-		if( ( prevToken.isNumber() 	)  && ( token.isImag()   	) )	
-		{
-			outputExpresion.insert(i,1,'*');
-			L = outputExpresion.length();
-		}
-
+		aux+=*it;
 	}
+	outputExpresion += aux;
 	return outputExpresion;
  }
 
