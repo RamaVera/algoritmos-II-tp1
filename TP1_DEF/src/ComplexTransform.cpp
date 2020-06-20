@@ -212,8 +212,8 @@ std::string ComplexTransform::parseExpresion( std::string inputExpresion )
 		else if( (token.isNumber()   ) && ( numberDetected == false   )){ numberDetected   = true; }
 		else if( numberDetected == true)
 		{
-			if(  token.isVariable() ) { aux+='*'; }
-			if(  token.isImag()     ) { aux+='*'; }
+			//if(  token.isVariable() ) { aux+='*'; }
+			//if(  token.isImag()     ) { aux+='*'; }
 		}  
 
 
