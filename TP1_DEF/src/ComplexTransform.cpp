@@ -56,7 +56,6 @@ string ComplexTransform::getValidFunctions(int i)
 }
 
 
-// OJO: Hay que corregirlo esta mallll
 bool ComplexTransform::isBalanced(const std::string functionExpresion)
 {
 	char symbol = 0;
@@ -299,7 +298,7 @@ void ComplexTransform::fun(Complejo & input){
 
 			next_token = function[i];
 
-			Complejo z_aux(0, 0); // No se si es bueno llamar al constructor en cada iteracion, pero bueno que seyooo
+			Complejo z_aux(0, 0); 
 
 			double val = 0; // En val se guardara el numero real 
 			double frac = 0.1; 
@@ -510,6 +509,7 @@ Complejo __apply_cmplx_operation(Complejo& z1, Complejo& z2, char op) {
 		return z1 * z2;
 		break;
 	case '/':
+		//cout << "hola" << endl;
 		return z1 / z2;
 		break;
 	case '^':

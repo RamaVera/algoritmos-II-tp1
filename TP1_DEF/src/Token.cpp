@@ -56,7 +56,7 @@ Token::Token(char c) {
 			this->associativity = 'l';
 			break;
 		case '^':
-			this->precedence = 4;
+			this->precedence = 0;
 			this->associativity = 'r';
 			break;
 		default:
