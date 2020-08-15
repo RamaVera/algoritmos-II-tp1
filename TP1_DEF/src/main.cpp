@@ -131,11 +131,11 @@ void transformar_imagen(const Images & origen, Images & destino){
 			//guarda la coordenada en forma de num complejo
 			plano.index2Comp(i, j); 
 			z_aux = plano.getComp();
-			
+
 			//calcula la anti transformada
 			transformada.fun(z_aux);
 			z_aux = transformada.getOutput();
-
+	
 			//guarda los indices del pixel del origen
 			plano.comp2Index(z_aux);
 

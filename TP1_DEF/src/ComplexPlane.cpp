@@ -91,11 +91,11 @@ void ComplexPlane::index2Comp(int row, int col){
 
 //guarda en row y col los índices asociados al número complejo entregado
 void ComplexPlane::comp2Index(Complejo & z){
-	double real = z.getReal();
-	double imaginario = z.getImag();
+	long double real = z.getReal();
+	long double imaginario = z.getImag();
 	
 	//si sale por fuera del plano, se guardan valores negativos de col y row 
-	if(abs(real) > 1 || abs(imaginario) > 1)
+	if(std::round(abs(real)) > 1.0 || std::round(abs(imaginario)) > 1.0)
 	{
 		this->row = -1;
 		this->col = -1;

@@ -135,7 +135,9 @@ Complejo operator- (double left, const Complejo & right){
 
 //PRODUCTO
 Complejo Complejo::operator*(const Complejo & right){
-	Complejo aux(real*right.real - imag*right.imag, real*right.imag + imag*right.real);
+	double a = real, b = imag, c = right.real, d = right.imag;
+	//Complejo aux((real*right.real - imag*right.imag)*1.0, 1.0*(real*right.imag + imag*right.real));
+	Complejo aux(a*c-b*d,a*d+b*c);
 	return aux;
 }
 
@@ -151,9 +153,14 @@ Complejo operator* (double left, const Complejo & right){
 
 //DIVISION
 Complejo Complejo::operator/(const Complejo & right){
-	double a = (this->real*right.real + this->imag*right.imag)/pow(right.abs,2);
-	double b = (this->imag*right.real - this->real*right.imag)/pow(right.abs,2);
-	Complejo aux(a, b);
+	//real = a ; imag = b
+	// right.real = c ; right.imag = d
+	double a = real, b = imag, c = right.real, d = right.imag;
+	//double a = 1.0*(this->real*right.real + this->imag*right.imag)/pow(right.abs,2);
+	//double b = 1.0*(this->imag*right.real - this->real*right.imag)/pow(right.abs,2);
+	double r = 1.0*(a*c+b*d)/(pow(c,2)+pow(d,2));
+	double i = 1.0*(b*c-a*d)/(pow(c,2)+pow(d,2));
+	Complejo aux(r, i);
 	return aux;
 }
 
