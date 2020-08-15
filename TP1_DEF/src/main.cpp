@@ -131,7 +131,7 @@ void transformar_imagen(const Images & origen, Images & destino){
 			//guarda la coordenada en forma de num complejo
 			plano.index2Comp(i, j); 
 			z_aux = plano.getComp();
-
+			
 			//calcula la anti transformada
 			transformada.fun(z_aux);
 			z_aux = transformada.getOutput();
@@ -233,7 +233,7 @@ opt_function(string const &arg)
 		{
 		cout << "La funcion se ingreso correctamente "<< endl;
 		string parsedString = ComplexTransform::parseExpresion(transformString);
-		cout<< "La transformacion elegida es f(z)= " << parsedString <<endl;
+		//cout<< "La transformacion elegida es f(z)= " << parsedString <<endl;
 		ComplexTransform::setTransform(parsedString);
 		break;
 		}

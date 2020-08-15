@@ -176,40 +176,11 @@ Complejo operator/ (double left, const Complejo & right){
 Complejo Complejo::operator^(const Complejo & right){
 
 
-
-	/*if(right.getImag() == 0){
-
-		int n = right.getReal();
-
-		Complejo resultado(1, 0);
-		//Acumulador de las potencias
-		Complejo acum = *this;
-
-		if(n<0){
-			//invierto el num complejo
-			acum = 1/acum;
-			//busco la potencia de este numero
-			return acum^(-n);
-		}
-		//Empezamos del LSB al MSB
-		while(n){
-			//si vale 1, actualizamos el resultado con el nuevo valor del acum
-			if(n&1)
-				resultado = resultado * acum;
-			//contamos el bit
-			acum = acum * acum;
-			//shifteamos a la derecha a n, desechando el LSB por el siguiente
-			n >>= 1;
-		}
-
-		return resultado;
-
-	}*/
-
 	//utilizo result como auxiliar tambien, pero despues se sobrescribe
 	Complejo result(real, imag), aux(right);
 	if(aux.getImag() == 0){
 		int n = aux.getReal();
+		//std::cout << "n = " << n << std::endl;
 		return result ^ (n);
 	}
 

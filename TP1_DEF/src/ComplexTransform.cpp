@@ -218,7 +218,19 @@ std::string ComplexTransform::parseExpresion( std::string inputExpresion )
 
 		aux+=*it;
 	}
+
 	outputExpresion += aux;
+
+	for(size_t i = 0 ; i < outputExpresion.length()-1 ; ++i){
+		
+		Token token = outputExpresion[i], next_token = outputExpresion[i+1];
+
+		if(token.sepLeft() && next_token.sym() == '-'){
+			outputExpresion.insert(i+1,1,'0');
+		}
+
+	}
+
 	return outputExpresion;
  }
 
