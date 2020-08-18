@@ -186,8 +186,7 @@ Complejo Complejo::operator^(const Complejo & right){
 	//utilizo result como auxiliar tambien, pero despues se sobrescribe
 	Complejo result(real, imag), aux(right);
 	if(aux.getImag() == 0){
-		int n = aux.getReal();
-		//std::cout << "n = " << n << std::endl;
+		double n = aux.getReal();
 		return result ^ (n);
 	}
 
@@ -201,12 +200,16 @@ Complejo Complejo::operator^(const Complejo & right){
 }
 
 Complejo Complejo::operator^(double right){
-	Complejo result, aux(real, imag);
-	aux = right * log(aux);
+	Complejo result;
+	double radio = pow(this->getAbs(), right);
+	double fase = right*this->getArg(); 
+	double aux;
 
-	//se setea mediante coordenadas polares
-	result.setAbs( exp(aux.getReal()) );
-	result.setArg( aux.getImag() );
+	aux = radio*cos(fase);
+	result.setReal(aux);
+
+	aux = radio*sin(fase);
+	result.setImag(aux);
 
 	return result;	
 }
